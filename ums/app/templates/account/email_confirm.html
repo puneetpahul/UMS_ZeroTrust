@@ -1,0 +1,15 @@
+<!-- templates/account/email_confirm.html -->
+
+{% extends "account/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h1>{% trans "Email Confirmation" %}</h1>
+    <p>{% trans "Thank you for confirming your email address. Please click on the link below to complete the confirmation process." %}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">{% trans "Confirm" %}</button>
+    </form>
+</div>
+{% endblock %}

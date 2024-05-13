@@ -1,0 +1,73 @@
+{% extends "account/index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin: 0 auto;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 10px #eee;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        <label for="id_email">{% trans "Email" %}</label>
+        {{ form.email }}
+
+        <label for="id_password1">{% trans "Password" %}</label>
+        {{ form.password1 }}
+
+        <label for="id_password2">{% trans "Password (again)" %}</label>
+        {{ form.password2 }}
+
+        <label for="id_role">{% trans "Role" %}</label>
+        {{ form.role }}
+
+        <label for="id_department">{% trans "Department" %}</label>
+        {{ form.department }}
+
+        <label for="id_country">{% trans "Country" %}</label>
+        {{ form.country }}
+
+        <button type="submit">{% trans "Sign Up" %}</button>
+    </form>
+</body>
+</html>
+{% endblock %}

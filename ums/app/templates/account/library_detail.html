@@ -1,0 +1,7 @@
+{% extends "account/index.html" %}
+{% block content %}
+<h2>You belong to {{ library.department.name }}</h2>
+<div>
+    <p>{{ library.constent|linebreaks }}</p>
+</div>
+{% endblock %}

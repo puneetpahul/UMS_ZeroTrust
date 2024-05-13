@@ -1,0 +1,40 @@
+{% extends "account/index.html" %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Device Information</h1>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Attribute</th>
+                <th scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Device Type</td>
+                <td>{{ device_type }}</td>
+            </tr>
+            <tr>
+                <td>Touch Capable</td>
+                <td>{{ is_touch_capable }}</td>
+            </tr>
+            <tr>
+                <td>Browser</td>
+                <td>{{ browser_family }} (Version: {{ browser_version }})</td>
+            </tr>
+            <tr>
+                <td>Operating System</td>
+                <td>{{ os_family }} (Version: {{ os_version }})</td>
+            </tr>
+            <tr>
+                <td>Device</td>
+                <td>{{ device_family }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+
