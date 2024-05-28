@@ -11,7 +11,7 @@
     {% block navigation %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="{% url 'account_login' %}"><b>University Management System</b></a>
+    <a class="navbar-brand" href="{% url 'user_profile' %}"><b>University Management System</b></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -20,6 +20,9 @@
         {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'user_profile' %}"><b>Profile</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login_history' %}"><b>Device history</b></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'my_device' %}"><b>Device</b></a>
@@ -95,5 +98,6 @@
 
     <!-- Bootstrap JS with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 </body>
 </html>

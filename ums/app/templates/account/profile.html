@@ -10,8 +10,7 @@
             <p><strong>{% trans "Email:" %}</strong> {{ user.email }}</p>
             <p><strong>{% trans "Role:" %}</strong> {{ user.role.name }}</p>
             <p><strong>{% trans "Department:" %}</strong> {{ user.department.name }}</p>
-            {% comment %} <p><strong>{% trans "Country:" %}</strong> {{ user.country }}</p> {% endcomment %}
-            {% comment %} <p><strong>{% trans "Time of Access:" %}</strong> {{ user.time_of_access }}</p> {% endcomment %}
+            <p><strong>{% trans "Account Creation Time:" %}</strong> {{ user.time_of_access }}</p>
         </div>
     </div>
 </div>

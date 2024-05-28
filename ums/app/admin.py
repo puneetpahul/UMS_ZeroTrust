@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Department, Role,Library,Exam,Course, Materialcourse
+from .models import CustomUser, Department, Role,Library,Exam,Course, Materialcourse,UserLoginHistory
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
@@ -41,3 +41,10 @@ class CourseAdmin(admin.ModelAdmin):
 @admin.register(Materialcourse)
 class MaterialcourseAdmin(admin.ModelAdmin):
     list_display = ['id','title','pdf_file','uploaded_by']
+
+
+
+@admin.register(UserLoginHistory)
+class UserLoginHistoryAdmin(admin.ModelAdmin):
+    list_display = ['user','timestamp','device_type','browser_version','is_touch_capable','browser_family','os_family','os_version','device_family']
+

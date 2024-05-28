@@ -11,6 +11,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path('accounts/profile/',UserProfileView.as_view(), name='user_profile'),
     path('accounts/login/', CustomLoginView.as_view(), name='account_login'),
     path('', CustomLoginView.as_view(), name='account_login'),
     path('accounts/otp_challenge/', otp_challenge, name='otp_challenge'),
@@ -28,6 +29,9 @@ urlpatterns = [
     path('accounts/my_device', views.my_device, name='my_device'),
     path('accounts/upload/', views.upload_course_material, name='upload_course_material'),
     path('accounts/materials/', views.list_course_materials, name='course_materials_list'),
+    path('accounts/login-history/', views.view_login_history, name='login_history'),
+    path('accounts/charts/student_counts/', views.student_count_per_department, name='student_counts'),
+    path('accounts/charts/course_distribution/', views.course_distribution, name='course_distribution'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

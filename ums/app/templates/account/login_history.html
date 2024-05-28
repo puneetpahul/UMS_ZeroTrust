@@ -1,0 +1,30 @@
+{% extends "account/index.html" %}
+{% block content %}
+<h2>Login History</h2>
+
+<table style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Date and Time</th>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Device Type</th>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Browser</th>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Browser Version</th>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Operating System</th>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">OS Version</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in history %}
+        <tr>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ record.timestamp }}</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ record.device_type }}</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ record.browser_family }}</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ record.browser_version }}</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ record.os_family }}</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{{ record.os_version }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

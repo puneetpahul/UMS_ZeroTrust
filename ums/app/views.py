@@ -67,7 +67,7 @@ def sensitive_data(request):
     if request.user.is_staff:
          return render(request, 'account/fees_detail.html',{'current_timezone': current_timezone})
     else :
-        return HttpResponse("Access Denied.Sensitive Data", status=403)
+        return render(request,"account/access_denied.html")
     
 
 @login_required
@@ -154,39 +154,77 @@ def my_activity(request):
 #     data = models.JSONField(default=dict)
 
 
+# from django_user_agents.utils import get_user_agent
+
+# def my_device(request):
+#     # Extracting user agent information
+#     user_agent = request.user_agent
+
+#     # Device Type Analysis
+#     if user_agent.is_mobile:
+#         device_type = 'Mobile'
+#     elif user_agent.is_tablet:
+#         device_type = 'Tablet'
+#     elif user_agent.is_pc:
+#         device_type = 'Desktop'
+#     elif user_agent.is_bot:
+#         device_type = 'Bot'
+#     else:
+#         device_type = 'Unknown Device Type'
+
+#     # Checking Touch Capability
+#     is_touch_capable = 'Yes' if user_agent.is_touch_capable else 'No'
+
+#     # Browser Information
+#     browser_family = user_agent.browser.family
+#     browser_version = user_agent.browser.version_string
+
+#     # Operating System Information
+#     os_family = user_agent.os.family
+#     os_version = user_agent.os.version_string
+
+#     # Device Information
+#     device_family = user_agent.device.family
+
+#     # Prepare context to send to the template
+#     context = {
+#         'device_type': device_type,
+#         'is_touch_capable': is_touch_capable,
+#         'browser_family': browser_family,
+#         'browser_version': browser_version,
+#         'os_family': os_family,
+#         'os_version': os_version,
+#         'device_family': device_family,
+#     }
+
+#     return render(request, 'account/my_device.html', context)
+
 from django_user_agents.utils import get_user_agent
+from .models import UserLoginHistory
 
 def my_device(request):
-    # Extracting user agent information
-    user_agent = request.user_agent
+    user_agent = get_user_agent(request)
 
-    # Device Type Analysis
-    if user_agent.is_mobile:
-        device_type = 'Mobile'
-    elif user_agent.is_tablet:
-        device_type = 'Tablet'
-    elif user_agent.is_pc:
-        device_type = 'Desktop'
-    elif user_agent.is_bot:
-        device_type = 'Bot'
-    else:
-        device_type = 'Unknown Device Type'
-
-    # Checking Touch Capability
-    is_touch_capable = 'Yes' if user_agent.is_touch_capable else 'No'
-
-    # Browser Information
+    device_type = 'Mobile' if user_agent.is_mobile else 'Tablet' if user_agent.is_tablet else 'Desktop' if user_agent.is_pc else 'Bot' if user_agent.is_bot else 'Unknown Device Type'
+    is_touch_capable = user_agent.is_touch_capable
     browser_family = user_agent.browser.family
     browser_version = user_agent.browser.version_string
-
-    # Operating System Information
     os_family = user_agent.os.family
     os_version = user_agent.os.version_string
-
-    # Device Information
     device_family = user_agent.device.family
 
-    # Prepare context to send to the template
+    # Log the login attempt
+    UserLoginHistory.objects.create(
+        user=request.user,
+        device_type=device_type,
+        is_touch_capable=is_touch_capable,
+        browser_family=browser_family,
+        browser_version=browser_version,
+        os_family=os_family,
+        os_version=os_version,
+        device_family=device_family
+    )
+
     context = {
         'device_type': device_type,
         'is_touch_capable': is_touch_capable,
@@ -224,4 +262,45 @@ def list_course_materials(request):
     return render(request, 'account/list_course_materials.html', {'materials': materials})
 
 
+@login_required
+def view_login_history(request):
+    history = UserLoginHistory.objects.filter(user=request.user).order_by('-timestamp')
+    return render(request, 'account/login_history.html', {'history': history})
+
+
+## Vusualization###
+import matplotlib.pyplot as plt
+from django.http import HttpResponse
+from .models import CustomUser, Course, Department
+from django.db.models import Count
+
+def student_count_per_department(request):
+    # Query the database for student counts per department
+    department_counts = CustomUser.objects.filter(role__name='student').values('department__name').annotate(count=Count('id')).order_by()
+
+    # Create a bar chart
+    plt.figure(figsize=(10, 5))
+    plt.bar([item['department__name'] for item in department_counts], [item['count'] for item in department_counts], color='skyblue')
+    plt.xlabel('Department')
+    plt.ylabel('Number of Students')
+    plt.title('Student Counts per Department')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    response = HttpResponse(content_type="image/png")
+    plt.savefig(response, format='png')
+    plt.close()
+    return response
+
+def course_distribution(request):
+    # Query the database for course counts by department
+    course_counts = Course.objects.values('department__name').annotate(count=Count('id'))
+
+    # Create a pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie([item['count'] for item in course_counts], labels=[item['department__name'] for item in course_counts], autopct='%1.1f%%', startangle=90)
+    plt.title('Course Distribution by Department')
+    response = HttpResponse(content_type="image/png")
+    plt.savefig(response, format='png')
+    plt.close()
+    return response
 
